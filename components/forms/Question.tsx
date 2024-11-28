@@ -1,9 +1,8 @@
 "use client";
-
+import React, { useState, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,8 +15,25 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { QuestionsSchema } from "@/lib/validations";
+import { Editor } from "@tinymce/tinymce-react";
+import { Badge } from "../ui/badge";
+import Image from "next/image";
+import { createQuestion } from "@/lib/actions/question.action";
+import { useRouter, usePathname } from "next/navigation";
 
-const Question = () => {
+const type: any = "create";
+
+interface Props {
+  mongoUserId: string;
+}
+
+export const Question = ({ mongoUserId }: Props) => {
+  const editorRef = useRef(null);
+  const [isSubmitting, setIsSubmititing] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // 1. Define your form.
   const form = useForm<z.infer<typeof QuestionsSchema>>({
     resolver: zodResolver(QuestionsSchema),
     defaultValues: {
@@ -27,9 +43,61 @@ const Question = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof QuestionsSchema>) {
-    console.log(values);
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof QuestionsSchema>) {
+    setIsSubmititing(true);
+
+    try {
+      await createQuestion({
+        title: values.title,
+        content: values.explanation,
+        tags: values.tags,
+        author: JSON.parse(mongoUserId),
+        path: pathname,
+      });
+
+      router.push("/");
+    } catch (error) {
+      console.log("Cannot submit the question form", error);
+    } finally {
+      setIsSubmititing(false);
+    }
   }
+
+  const handleInputKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    field: any
+  ) => {
+    if (e.key === "Enter" && field.name === "tags") {
+      e.preventDefault();
+
+      const tagInput = e.target as HTMLInputElement;
+      const tagValue = tagInput.value.trim();
+
+      if (tagValue !== "") {
+        if (tagValue.length > 15) {
+          return form.setError("tags", {
+            type: "required",
+            message: "Tag must be less than 15 characters",
+          });
+        }
+
+        if (!field.value.includes(tagValue as never)) {
+          form.setValue("tags", [...field.value, tagValue]);
+          tagInput.value = "";
+          form.clearErrors("tags");
+        }
+      } else {
+        form.trigger();
+      }
+    }
+  };
+
+  const handleTagRemove = (tag: string, field: any) => {
+    const newTags = field.value.filter((t: string) => t !== tag);
+    form.setValue("tags", newTags);
+  };
+
   return (
     <Form {...form}>
       <form
@@ -59,7 +127,7 @@ const Question = () => {
           )}
         />
 
-        {/* EXPANATION */}
+        {/* EXPLANATION */}
         <FormField
           control={form.control}
           name="explanation"
@@ -115,6 +183,7 @@ const Question = () => {
             </FormItem>
           )}
         />
+
         {/* TAGS */}
         <FormField
           control={form.control}
@@ -161,10 +230,17 @@ const Question = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button
+          type="submit"
+          className="primary-gradient w-fit !text-light-900"
+          disabled={isSubmitting}>
+          {isSubmitting ? (
+            <>{type === "edit" ? "Editing ..." : "Posting ..."}</>
+          ) : (
+            <>{type === "edit" ? "Edit Question" : "Ask a question"}</>
+          )}
+        </Button>
       </form>
     </Form>
   );
 };
-
-export default Question;

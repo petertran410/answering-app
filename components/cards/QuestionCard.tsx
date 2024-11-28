@@ -4,7 +4,7 @@ import React from "react";
 import RenderTag from "../shared/RenderTag";
 import Metric from "../shared/Metric";
 
-interface QuestionProps {
+interface QuestionCardProps {
   _id: string;
   title: string;
   tags: {
@@ -31,7 +31,9 @@ const QuestionCard = ({
   views,
   answers,
   createdAt,
-}: QuestionProps) => {
+}: QuestionCardProps) => {
+  console.log(title);
+
   return (
     <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -54,15 +56,17 @@ const QuestionCard = ({
       </div>
 
       <div className="flex-between mt-6 w-full flex-wrap">
-        <Metric
-          imgUrl="/assets/icons/avatar.svg"
-          alt="user"
-          value={author.name}
-          title={` - asked ${getTimestamp(createdAt)}`}
-          href={`/profile/${author._id}`}
-          isAuthor
-          textStyles="body-medium text-dark400_light700"
-        />
+        {author && (
+          <Metric
+            imgUrl="/assets/icons/avatar.svg"
+            alt="user"
+            value={author.name}
+            title={` - asked ${getTimestamp(createdAt)}`}
+            href={`/profile/${author._id}`}
+            isAuthor
+            textStyles="body-medium text-dark400_light700"
+          />
+        )}
         <Metric
           imgUrl="/assets/icons/like.svg"
           alt="Upvotes"

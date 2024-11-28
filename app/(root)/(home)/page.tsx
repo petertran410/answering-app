@@ -5,36 +5,13 @@ import NoResult from "@/components/shared/NoResult";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
+import { getQuestion } from "@/lib/actions/question.action";
 import Link from "next/link";
 import React from "react";
 
-const questions = [
-  {
-    _id: "1",
-    title: "Cascading Deletes in SQLAlchemy?",
-    tags: [
-      { _id: "1", name: "python" },
-      { _id: "2", name: "sqlalchemy" },
-    ],
-    author: {
-      _id: "1",
-      name: "John Doe",
-      picture: "https://example.com/johndoe.jpg",
-    },
-    upvotes: 50000,
-    views: 1000,
-    answers: [
-      {
-        _id: "1",
-        content: "Ensure cascading deletes are configured in relationships.",
-      },
-      { _id: "2", content: "Use `delete-orphan` for dependent objects." },
-    ],
-    createdAt: new Date("2024-11-19T12:00:00.000Z"),
-  },
-];
+const Home = async () => {
+  const result = await getQuestion({});
 
-const Home = () => {
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -65,8 +42,8 @@ const Home = () => {
       <HomeFilters />
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions.length > 0 ? (
-          questions.map((question) => {
+        {result.questions.length > 0 ? (
+          result.questions.map((question) => {
             return (
               <QuestionCard
                 key={question._id}
