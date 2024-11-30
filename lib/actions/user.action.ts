@@ -1,14 +1,15 @@
+/* eslint-disable no-unused-vars */
 "use server";
 
 import User from "@/database/user.model";
 import { connectToDatabase } from "../mongoose";
-// import {
-//   CreateUserParams,
-//   DeleteUserParams,
-//   UpdateUserParams,
-// } from "./shared.types";
-// import { revalidatePath } from "next/cache";
-// import Question from "@/database/question.model";
+import {
+  CreateUserParams,
+  DeleteUserParams,
+  UpdateUserParams,
+} from "./shared.types";
+import { revalidatePath } from "next/cache";
+import Question from "@/database/question.model";
 
 export const getUserById = async (params: any) => {
   try {
@@ -25,64 +26,64 @@ export const getUserById = async (params: any) => {
   }
 };
 
-// export const createUser = async (userData: CreateUserParams) => {
-//   try {
-//     await connectToDatabase();
+export const createUser = async (userData: CreateUserParams) => {
+  try {
+    await connectToDatabase();
 
-//     const newUser = await User.create(userData);
+    const newUser = await User.create(userData);
 
-//     return newUser;
-//   } catch (error) {
-//     console.log("Error no userId found", error);
-//     throw error;
-//   }
-// };
+    return newUser;
+  } catch (error) {
+    console.log("Error no userId found", error);
+    throw error;
+  }
+};
 
-// export const updateUser = async (params: UpdateUserParams) => {
-//   try {
-//     await connectToDatabase();
+export const updateUser = async (params: UpdateUserParams) => {
+  try {
+    await connectToDatabase();
 
-//     const { clerkId, updateData, path } = params;
+    const { clerkId, updateData, path } = params;
 
-//     await User.findOneAndUpdate({ clerkId }, updateData, {
-//       new: true,
-//     });
+    await User.findOneAndUpdate({ clerkId }, updateData, {
+      new: true,
+    });
 
-//     revalidatePath(path);
-//   } catch (error) {
-//     console.log(error);
-//     throw new Error("Cannot update User");
-//   }
-// };
+    revalidatePath(path);
+  } catch (error) {
+    console.log("Cannot update user", error);
+    throw error;
+  }
+};
 
-// export const deleteUser = async (params: DeleteUserParams) => {
-//   try {
-//     await connectToDatabase();
+export const deleteUser = async (params: DeleteUserParams) => {
+  try {
+    await connectToDatabase();
 
-//     const { clerkId } = params;
+    const { clerkId } = params;
 
-//     const user = await User.findOneAndDelete({ clerkId });
+    const user = await User.findOneAndDelete({ clerkId });
 
-//     if (!user) {
-//       throw new Error("User not found");
-//     }
+    if (!user) {
+      throw new Error("User not found");
+    }
 
-//     // Delete everything from user: questions, answers, comments, etc
+    // Delete everything from user: questions, answers, comments, etc
 
-//     const userQuestionIds = await Question.find({ author: user._id }).distinct(
-//       "_id"
-//     );
+    const userQuestionIds = await Question.find({ author: user._id }).distinct(
+      "_id"
+    );
 
-//     // delete user questions
-//     await Question.deleteMany({ author: user._id });
+    // delete user questions
+    await Question.deleteMany({ author: user._id });
 
-//     // TODO: delete user answers, comments, etc
+    // TODO: delete user answers, comments, etc
 
-//     const deletedUser = await User.findByIdAndDelete(user._id);
+    const deletedUser = await User.findByIdAndDelete(user._id);
 
-//     return deletedUser;
-//   } catch (error) {
-//     console.log(error);
-//     throw new Error("Cannot delete User");
-//   }
-// };
+    return deletedUser;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Cannot delete User");
+  }
+};
