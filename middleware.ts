@@ -21,5 +21,5 @@ export default clerkMiddleware(
 );
 
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/ask-question", "/(api|trpc)(.*)"],
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
