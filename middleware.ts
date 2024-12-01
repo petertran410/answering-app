@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const isProtectedRoute = createRouteMatcher([
@@ -8,7 +9,7 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 // export default clerkMiddleware((auth, req) => {
-//   if (isProtectedRoute(req)) auth();
+// if (isProtectedRoute(req)) auth();
 // });
 
 export default clerkMiddleware(
@@ -20,5 +21,5 @@ export default clerkMiddleware(
 );
 
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/ask-question", "/(api|trpc)(.*)"],
 };
