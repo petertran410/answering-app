@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-/* eslint-disable no-unused-vars */
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
@@ -53,12 +52,14 @@ export async function POST(req: Request) {
 
   const eventType = evt.type;
 
-  // Create a new user in database
+  console.log(eventType);
+
   if (eventType === "user.created") {
     const { id, email_addresses, image_url, username, first_name, last_name } =
       evt.data;
 
-    const createMongoUser = await createUser({
+    // Create a new user in our database
+    const mongoUser = await createUser({
       clerkId: id,
       name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
       username: username!,
@@ -66,15 +67,15 @@ export async function POST(req: Request) {
       picture: image_url,
     });
 
-    return NextResponse.json({ message: "OK", user: createMongoUser });
+    return NextResponse.json({ message: "OK", user: mongoUser });
   }
 
-  // Update a user in database
   if (eventType === "user.updated") {
     const { id, email_addresses, image_url, username, first_name, last_name } =
       evt.data;
 
-    const updateMongoUser = await updateUser({
+    // Update a user in our database
+    const mongoUser = await updateUser({
       clerkId: id,
       updateData: {
         name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
@@ -82,23 +83,19 @@ export async function POST(req: Request) {
         email: email_addresses[0].email_address,
         picture: image_url,
       },
-
-      path: `/profile/{id}`,
+      path: `/profile/${id}`,
     });
 
-    return NextResponse.json({ message: "OK", user: updateMongoUser });
+    return NextResponse.json({ message: "OK", user: mongoUser });
   }
 
-  // Delete a user in database
   if (eventType === "user.deleted") {
     const { id } = evt.data;
 
-    const deleteMongoUser = await deleteUser({
-      clerkId: id!,
-    });
+    const userDeleted = await deleteUser({ clerkId: id! });
 
-    return NextResponse.json({ message: "OK", user: deleteMongoUser });
+    return NextResponse.json({ message: "OK", user: userDeleted });
   }
 
-  return new Response("Webhook connected", { status: 201 });
+  return new Response("Webhook received", { status: 200 });
 }

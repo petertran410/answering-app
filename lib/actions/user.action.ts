@@ -51,8 +51,8 @@ export const updateUser = async (params: UpdateUserParams) => {
 
     revalidatePath(path);
   } catch (error) {
-    console.log("Cannot update user", error);
-    throw error;
+    console.log(error);
+    throw new Error("Cannot update User");
   }
 };
 
