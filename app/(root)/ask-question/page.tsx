@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Question } from "@/components/forms/Question";
 import { getUserById } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs/server";
@@ -5,10 +6,9 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 const page = async () => {
-  const { userId }: any = auth();
+  const { userId } = await auth();
 
-  // const userId = "clerk_001";
-
+  // const userId = "user_2pbprhZFBWCpOCt7w59gkv1bK4t";
   if (!userId) {
     redirect("/sign-in");
   }
