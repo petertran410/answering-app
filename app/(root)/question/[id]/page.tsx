@@ -17,11 +17,10 @@ const Page = async ({ searchParams, params }: any) => {
 
   const { userId: clerkId } = await auth();
 
-  let mongoUser;
+  let mongoUser = null;
   if (clerkId) {
     mongoUser = await getUserById({ userId: clerkId });
   }
-
   return (
     <>
       <div className="flex-start w-full flex-col">
@@ -49,7 +48,7 @@ const Page = async ({ searchParams, params }: any) => {
               hasupVoted={result.upvotes.includes(mongoUser._id)}
               downvotes={result.downvotes.length}
               hasdownVoted={result.downvotes.includes(mongoUser._id)}
-              hasSaved={mongoUser?.saved.includes(result._id)}
+              handleSaved={mongoUser?.saved.includes(result._id)}
             />
           </div>
         </div>

@@ -18,7 +18,7 @@ interface Props {
   hasupVoted: boolean;
   downvotes: number;
   hasdownVoted: boolean;
-  hasSaved?: boolean;
+  handleSaved?: boolean;
 }
 
 export const Votes = ({
@@ -29,16 +29,18 @@ export const Votes = ({
   downvotes,
   hasupVoted,
   hasdownVoted,
-  hasSaved,
+  handleSaved = false,
 }: Props) => {
   const pathname = usePathname();
   // const router = useRouter();
 
   const handleSave = async () => {
+    if (!userId) return;
+
     await toggleSaveQuestion({
       userId: JSON.parse(userId),
       questionId: JSON.parse(itemId),
-      path: pathname,
+      path: window.location.pathname,
     });
   };
 
@@ -139,20 +141,20 @@ export const Votes = ({
         </div>
       </div>
 
-      {type === "Question" && (
-        <Image
-          src={
-            hasSaved
-              ? "/assets/icons/star-filled.svg"
-              : "/assets/icons/star-red.svg"
-          }
-          alt="star"
-          width={18}
-          height={18}
-          className="cursor-pointer"
-          onClick={handleSave}
-        />
-      )}
+      <Image
+        src={
+          handleSaved
+            ? "/assets/icons/star-filled.svg"
+            : "/assets/icons/star-red.svg"
+        }
+        alt="star"
+        width={18}
+        height={18}
+        className="cursor-pointer"
+        onClick={() => {
+          handleSave();
+        }}
+      />
     </div>
   );
 };
