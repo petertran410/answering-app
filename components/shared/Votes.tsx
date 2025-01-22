@@ -30,7 +30,7 @@ export const Votes = ({
   downvotes,
   hasupVoted,
   hasdownVoted,
-  handleSaved = false,
+  handleSaved,
 }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
