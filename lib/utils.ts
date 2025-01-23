@@ -52,3 +52,15 @@ export const formatAndDivideNumber = (num: number): string => {
     return num.toString();
   }
 };
+
+export const getMonthYear = (date: Date): string => {
+  if (!(date instanceof Date)) {
+    throw new Error("Invalid input: Expected a Date object.");
+  }
+
+  const options: Intl.DateTimeFormatOptions = {
+    month: "long",
+    year: "numeric",
+  };
+  return date.toLocaleDateString("en-US", options);
+};
