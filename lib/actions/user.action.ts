@@ -37,6 +37,8 @@ export const createUser = async (userData: CreateUserParams) => {
 
     const newUser = await User.create(userData);
 
+    console.log("User created", newUser);
+
     return newUser;
   } catch (error) {
     console.log("Error no userId found", error);
