@@ -8,13 +8,12 @@ const isProtectedRoute = createRouteMatcher([
   "/api/webhooks",
 ]);
 
-export default clerkMiddleware(
-  async (auth: { protect: () => any }, request: any) => {
-    if (!isProtectedRoute(request)) {
-      await auth.protect();
-    }
-  }
-);
+export default clerkMiddleware();
+// async (auth: { protect: () => any }, request: any) => {
+//   if (!isProtectedRoute(request)) {
+//     await auth.protect();
+//   }
+// }
 
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],

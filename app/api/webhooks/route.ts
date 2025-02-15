@@ -32,6 +32,7 @@ export async function POST(req: Request) {
 
   // Get body
   const payload = await req.json();
+  console.log("Received Webhook:", payload);
   const body = JSON.stringify(payload);
 
   let evt: WebhookEvent;
