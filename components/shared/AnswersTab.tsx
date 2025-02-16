@@ -9,7 +9,7 @@ interface AnswersTabProps extends SearchParamsProps {
 }
 
 const AnswersTab = async ({
-  searchParam,
+  // searchParam,
   userId,
   clerkId,
 }: AnswersTabProps) => {
