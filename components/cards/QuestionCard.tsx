@@ -7,6 +7,7 @@ import { SignedIn } from "@clerk/nextjs";
 import EditDeleteAction from "../shared/EditDeleteAction";
 
 interface QuestionCardProps {
+  clerkId?: string | null;
   _id: string;
   title: string;
   tags: {
@@ -34,6 +35,7 @@ const QuestionCard = async ({
   views,
   answers,
   createdAt,
+  clerkId,
 }: QuestionCardProps) => {
   const showActionButtons = author.clerkId;
 
