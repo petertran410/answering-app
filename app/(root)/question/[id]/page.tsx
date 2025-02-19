@@ -14,7 +14,6 @@ import { Votes } from "@/components/shared/Votes";
 
 const Page = async ({ searchParams, params }: any) => {
   const result = await GetQuestionById({ questionId: params.id });
-
   const { userId: clerkId } = await auth();
 
   let mongoUser = null;

@@ -6,11 +6,14 @@ import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../mongoose";
 import {
   CreateQuestionParams,
+  DeleteQuestionParams,
   GetQuestionByIdParams,
   GetQuestionsParams,
   QuestionVoteParams,
 } from "./shared.types";
 import User from "@/database/user.model";
+import Answer from "@/database/answer.model";
+import Interaction from "@/database/interaction.model";
 
 export const getQuestion = async (param: GetQuestionsParams) => {
   try {
@@ -146,6 +149,27 @@ export const downvoteQuestion = async (params: QuestionVoteParams) => {
     revalidatePath(path);
   } catch (error) {
     console.log("Cannot downvote question", error);
+    throw error;
+  }
+};
+
+export const deleteQuestion = async (params: DeleteQuestionParams) => {
+  try {
+    await connectToDatabase();
+
+    const { questionId, path } = params;
+
+    await Question.deleteOne({ _id: questionId });
+    await Answer.deleteMany({ question: questionId });
+    await Interaction.deleteMany({ question: questionId });
+    await Tag.updateMany(
+      { question: questionId },
+      { $pull: { questions: questionId } }
+    );
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log("Cannot delete question", error);
     throw error;
   }
 };

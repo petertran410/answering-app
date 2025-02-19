@@ -11,6 +11,10 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
+const SAVEABLE_TYPES = ["Question"] as const;
+// eslint-disable-next-line no-unused-vars
+type SaveableType = (typeof SAVEABLE_TYPES)[number];
+
 interface Props {
   type: string;
   itemId: string;
@@ -34,6 +38,7 @@ export const Votes = ({
 }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
+  const canBeSaved = SAVEABLE_TYPES.includes(type as SaveableType);
 
   const handleSave = async () => {
     if (!userId) return;
@@ -148,21 +153,22 @@ export const Votes = ({
           </div>
         </div>
       </div>
-
-      <Image
-        src={
-          handleSaved
-            ? "/assets/icons/star-filled.svg"
-            : "/assets/icons/star-red.svg"
-        }
-        alt="star"
-        width={18}
-        height={18}
-        className="cursor-pointer"
-        onClick={() => {
-          handleSave();
-        }}
-      />
+      {canBeSaved && (
+        <Image
+          src={
+            handleSaved
+              ? "/assets/icons/star-filled.svg"
+              : "/assets/icons/star-red.svg"
+          }
+          alt="star"
+          width={18}
+          height={18}
+          className="cursor-pointer"
+          onClick={() => {
+            handleSave();
+          }}
+        />
+      )}
     </div>
   );
 };
