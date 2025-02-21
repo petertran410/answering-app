@@ -18,7 +18,7 @@ const AnswersTab = async ({
     page: 1,
   });
   return (
-    <>
+    <div>
       {result.answers.map((answer) => {
         return (
           <AnswerCard
@@ -32,7 +32,7 @@ const AnswersTab = async ({
           />
         );
       })}
-    </>
+    </div>
   );
 };
 

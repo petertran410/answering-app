@@ -92,6 +92,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
               <FormItem className="flex w-full flex-col gap-3">
                 <FormControl className="mt-3.5">
                   <Editor
+                    key={mode}
                     apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
                     onInit={(evt, editor) => {
                       // @ts-ignore
@@ -101,7 +102,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
                     onEditorChange={(content) => field.onChange(content)}
                     initialValue=""
                     init={{
-                      height: 350,
+                      height: 400,
                       menubar: false,
                       plugins: [
                         "advlist",
@@ -121,13 +122,13 @@ const Answer = ({ question, questionId, authorId }: Props) => {
                         "table",
                       ],
                       toolbar:
-                        "undo redo | blocks | " +
-                        "codesample | bold italic forecolor | alignleft aligncenter " +
+                        "undo redo | " +
+                        "codesample | bold italic forecolor | alignleft aligncenter |" +
                         "alignright alignjustify | bullist numlist",
                       content_style:
-                        "body { font-family:Inter; font-size:16px }",
+                        "body { font-family: Inter; font-size: 16px; }",
                       skin: mode === "dark" ? "oxide-dark" : "oxide",
-                      content_css: mode === "dark" ? "dark" : "dark",
+                      content_css: mode === "dark" ? "dark" : "light",
                     }}
                   />
                 </FormControl>

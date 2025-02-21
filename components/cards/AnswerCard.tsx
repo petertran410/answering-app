@@ -42,12 +42,12 @@ const AnswerCard = ({
             {getTimestamp(createdAt)}
           </span>
           <Link href={`/question/${question?._id}/#${_id}`}>
-            <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
+            <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1 sm:max-w-[200px] xl:max-w-[400px]">
               {question.title}
             </h3>
           </Link>
           <Link href={`/question/${question?._id}/#${_id}`} className="mt-2">
-            <p className="text-dark400_light700 max-w-[500px] truncate sm:max-w-[90px] md:max-w-[300px]">
+            <p className="text-dark400_light700 truncate max-[639px]:max-w-[200px] sm:max-w-[200px] md:max-w-[400px] lg:max-w-[500px] xl:max-w-[400px]">
               {question.content.replace(/<[^>]*>/g, "")}
             </p>
           </Link>
