@@ -18,8 +18,9 @@ interface Props {
   createdAt: Date;
 }
 
-const QuestionCard = async ({
+const QuestionCard = ({
   _id,
+  clerkId,
   title,
   tags,
   author,
@@ -28,7 +29,9 @@ const QuestionCard = async ({
   answers,
   createdAt,
 }: Props) => {
-  const showActionButtons = author.clerkId;
+  const showActionButtons = clerkId && clerkId === author.clerkId;
+
+  console.log(author);
 
   return (
     <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
