@@ -88,3 +88,18 @@ export const getQuestionsByTagId = async (
     throw error;
   }
 };
+
+export const getHotTags = async () => {
+  try {
+    await connectToDatabase();
+
+    const popularTags = Tag.aggregate([
+      { $project: { name: 1, totalQuestions: { $size: "$questions" } } },
+      { $sort: { totalQuestions: -1 } },
+      { $limit: 5 },
+    ]);
+    return popularTags;
+  } catch (error) {
+    console.log("Cannot get hot tags", error);
+  }
+};
