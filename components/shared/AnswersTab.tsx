@@ -24,7 +24,7 @@ const AnswersTab = async ({
           <AnswerCard
             key={answer._id}
             _id={answer._id}
-            clerkId={clerkId}
+            clerkId={answer.author.clerkId}
             question={answer.question}
             author={answer.author}
             upvotes={answer.upvotes}

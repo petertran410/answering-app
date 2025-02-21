@@ -32,7 +32,7 @@ const AnswerCard = ({
   createdAt,
   clerkId,
 }: Props) => {
-  const showActionButtons = author.clerkId;
+  const showActionButtons = clerkId && clerkId === author.clerkId;
 
   return (
     <div className="card-wrapper rounded-[10px] p-9 sm:px-11">

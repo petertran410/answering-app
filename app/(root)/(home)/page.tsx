@@ -47,7 +47,7 @@ const Home = async () => {
             return (
               <QuestionCard
                 key={question._id}
-                clerkId={question.author}
+                clerkId={question.author.clerkId}
                 _id={question._id}
                 title={question.title}
                 tags={question.tags}
