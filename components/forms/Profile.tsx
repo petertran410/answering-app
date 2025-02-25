@@ -73,8 +73,11 @@ const Profile = ({ clerkId, user }: Props) => {
           name="name"
           render={({ field }) => (
             <FormItem className="space-y-3.5">
-              <FormLabel>
-                Name <span className="text-primary-500">*</span>
+              <FormLabel className="text-dark200_light800">
+                Name{" "}
+                <span className="text-dark200_light800 text-primary-500">
+                  *
+                </span>
               </FormLabel>
               <FormControl>
                 <Input
@@ -94,8 +97,11 @@ const Profile = ({ clerkId, user }: Props) => {
           name="username"
           render={({ field }) => (
             <FormItem className="space-y-3.5">
-              <FormLabel>
-                Username <span className="text-primary-500">*</span>
+              <FormLabel className="text-dark200_light800">
+                Username{" "}
+                <span className="text-dark200_light800 text-primary-500">
+                  *
+                </span>
               </FormLabel>
               <FormControl>
                 <Input
@@ -115,7 +121,9 @@ const Profile = ({ clerkId, user }: Props) => {
           name="porfolioWebsite"
           render={({ field }) => (
             <FormItem className="space-y-3.5">
-              <FormLabel>Portfolio Link</FormLabel>
+              <FormLabel className="text-dark200_light800">
+                Portfolio Link
+              </FormLabel>
               <FormControl>
                 <Input
                   type="url"
@@ -135,7 +143,9 @@ const Profile = ({ clerkId, user }: Props) => {
           name="location"
           render={({ field }) => (
             <FormItem className="space-y-3.5">
-              <FormLabel>Your location</FormLabel>
+              <FormLabel className="text-dark200_light800">
+                Your location
+              </FormLabel>
               <FormControl>
                 <Input
                   placeholder="Where are you from ?"
@@ -154,7 +164,7 @@ const Profile = ({ clerkId, user }: Props) => {
           name="bio"
           render={({ field }) => (
             <FormItem className="space-y-3.5">
-              <FormLabel>Bio</FormLabel>
+              <FormLabel className="text-dark200_light800">Bio</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="What your special ?"
