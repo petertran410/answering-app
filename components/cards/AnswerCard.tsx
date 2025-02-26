@@ -46,11 +46,6 @@ const AnswerCard = ({
               {question.title}
             </h3>
           </Link>
-          <Link href={`/question/${question?._id}/#${_id}`} className="mt-2">
-            <p className="text-dark400_light700 truncate max-[639px]:max-w-[200px] sm:max-w-[200px] md:max-w-[400px] lg:max-w-[500px] xl:max-w-[400px]">
-              {question.content.replace(/<[^>]*>/g, "")}
-            </p>
-          </Link>
         </div>
         <SignedIn>
           {showActionButtons && (
