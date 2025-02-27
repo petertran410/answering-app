@@ -1,8 +1,45 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
+import { formUrlQuery, removeKeyFromQuery } from "@/lib/utils";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import GlobalResult from "./GlobalResult";
 
 export const GlobalSearch = () => {
+  const router = useRouter();
+  const pathName = usePathname();
+  const searchParams = useSearchParams();
+
+  const query = searchParams.get("q");
+
+  const [search, setSearch] = useState(query || "");
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (search) {
+        const newUrl = formUrlQuery({
+          params: searchParams.toString(),
+          key: "global",
+          value: search,
+        });
+
+        router.push(newUrl);
+      } else {
+        if (query) {
+          const newUrl = removeKeyFromQuery({
+            params: searchParams.toString(),
+            keysToRemove: ["global", "type"],
+          });
+          router.push(newUrl);
+        }
+      }
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [search, pathName, router, searchParams, query]);
+
   return (
     <div className="relative w-full max-w-[600px] max-lg:hidden">
       <div className="background-light800_darkgradient relative flex min-h-[56px] grow items-center gap-1 rounded-xl px-4">
@@ -16,9 +53,18 @@ export const GlobalSearch = () => {
         <Input
           type="text"
           placeholder="Search globally"
-          className="paragraph-regular no-focus placeholder background-light800_darkgradient border-none pl-12 shadow-none outline-none"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+
+            if (!isOpen) setIsOpen(true);
+            if (e.target.value === "" && isOpen) setIsOpen(false);
+          }}
+          className="paragraph-regular no-focus placeholder
+          text-dark400_light700 background-light800_darkgradient border-none pl-12 shadow-none outline-none"
         />
       </div>
+      {isOpen && <GlobalResult />}
     </div>
   );
 };
