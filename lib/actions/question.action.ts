@@ -101,6 +101,7 @@ export const createQuestion = async (param: CreateQuestionParams) => {
       content,
       author,
     });
+
     const tagDocuments = [];
 
     // Create the tags or get them if they already exist
@@ -115,9 +116,19 @@ export const createQuestion = async (param: CreateQuestionParams) => {
     await Question.findByIdAndUpdate(question._id, {
       $push: { tags: { $each: tagDocuments } },
     });
+
     // Create an interaction record for the user's ask_question action
-    revalidatePath(path);
+    await Interaction.create({
+      user: author,
+      action: "ask_question",
+      question: question._id,
+      tags: tagDocuments,
+    });
+
     // Imcrement author's reputation by +5 for creating a question
+    await User.findByIdAndUpdate(author, { $inc: { reputation: 5 } });
+
+    revalidatePath(path);
   } catch (error) {
     console.log("Cannot create question", error);
     throw error;
@@ -149,6 +160,16 @@ export const upvoteQuestion = async (params: QuestionVoteParams) => {
     if (!question) {
       throw new Error("Question not found");
     }
+
+    // Increment author's reputation by +1/-1 for upvoting/revoking an upvote to the question
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasupVoted ? -1 : 1 },
+    });
+
+    // Increment author's reputation by +10/-10 for reveiving and upvote/downvote to the question
+    await User.findByIdAndUpdate(question.author, {
+      $inc: { reputation: hasupVoted ? -10 : 10 },
+    });
 
     revalidatePath(path);
   } catch (error) {

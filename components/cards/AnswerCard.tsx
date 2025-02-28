@@ -5,6 +5,7 @@ import Metric from "../shared/Metric";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import { SignedIn } from "@clerk/nextjs";
 import EditDeleteAction from "../shared/EditDeleteAction";
+import { auth } from "@clerk/nextjs/server";
 
 interface Props {
   clerkId?: string | null;
@@ -24,14 +25,14 @@ interface Props {
   createdAt: Date;
 }
 
-const AnswerCard = ({
+const AnswerCard = async ({
   _id,
   question,
   author,
   upvotes,
   createdAt,
-  clerkId,
 }: Props) => {
+  const { userId: clerkId } = await auth();
   const showActionButtons = clerkId && clerkId === author.clerkId;
 
   return (

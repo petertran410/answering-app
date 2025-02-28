@@ -19,7 +19,7 @@ const AnswersTab = async ({
     page: searchParams?.page ? +searchParams.page : 1,
   });
   return (
-    <div>
+    <>
       {result.answers.map((answer) => {
         return (
           <AnswerCard
@@ -40,7 +40,7 @@ const AnswersTab = async ({
           isNext={result.isNextAnswers}
         />
       </div>
-    </div>
+    </>
   );
 };
 

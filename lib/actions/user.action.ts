@@ -18,7 +18,6 @@ import User from "@/database/user.model";
 import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
 import Answer from "@/database/answer.model";
-import { Users } from "lucide-react";
 
 export const getUserById = async (params: any) => {
   try {
@@ -289,7 +288,7 @@ export const getUserQuestions = async (params: GetUserStatsParams) => {
 
     const totalQuestions = await Question.countDocuments({ author: userId });
     const userQuestions = await Question.find({ author: userId })
-      .sort({ view: -1, upvotes: -1 })
+      .sort({ createdAt: -1, views: -1, upvotes: -1 })
       .populate("tags", "_id name")
       .populate("author", "_id clerkId name picture")
       .skip(skipAmount)
